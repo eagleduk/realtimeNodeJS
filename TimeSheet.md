@@ -15,3 +15,6 @@
       2. app.set(`[pug root path]`, join(__dirname, `[pug root path]`));
 6. static 설정
    1. express.use("static", `join(__dirname, "static"`);
+7. eslint 설치
+   1. npm install eslint --save-dev
+   2. eslintrs.js 파일 생성 및 입력
