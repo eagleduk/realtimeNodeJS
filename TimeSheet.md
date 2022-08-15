@@ -102,3 +102,22 @@
    }
 
    ```
+
+## Gulp
+
+1. Gulp 설치
+   1. npm install --save-dev gulp
+   2. `gulpfile.js` 생성
+      - import / export 문법을 사용하기 위해서는 `gulpfile.babel.js` 로 생성
+   3. gulp build sciprt 생성
+2. sass, gulp-sass 설치
+   1. npm install sass gulp-sass --save-dev
+3. build watch
+   1. `gulpfile.babel.js` gulp.watch 함수를 실행하는 함수 export
+4. Gulp plugin
+   1. autoprefixer 설치
+      1. npm install --save-dev gulp-autoprefixer
+      2. 구형 브라우저에서도 scss 가 호환이 가능하게 해주는 plugin.
+   2. gulp-csso 설치
+      1. npm install gulp-csso --save-dev 
+      2. css 파일의 용량을 줄이기 위한 plugin.

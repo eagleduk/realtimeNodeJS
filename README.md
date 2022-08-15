@@ -7,3 +7,4 @@ realtime socket.io, pug and nodeJS w.nomadcoder
 - [x] Static
 - [x] ESLint
 - [x] SocketIO
+- [x] Gulp

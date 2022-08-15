@@ -4,7 +4,8 @@
   "description": "realtime socket.io, pug and nodeJS w.nomadcoder",
   "main": "index.js",
   "scripts": {
-    "dev:server": "nodemon --exec babel-node src/server"
+    "dev:server": "nodemon --exec babel-node src/server",
+    "build:server": "gulp"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,11 @@
     "@babel/core": "^7.18.10",
     "@babel/node": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
-    "eslint": "^8.22.0"
+    "eslint": "^8.22.0",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-csso": "^4.0.1",
+    "gulp-sass": "^5.1.0",
+    "sass": "^1.54.4"
   }
 }
