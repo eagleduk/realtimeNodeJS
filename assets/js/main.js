@@ -1,8 +1,8 @@
+import { handleReceiveMessage } from "./chat";
+
 const socket = io();
 
-socket.on("receiveMessage", ({ nickname, text }) => {
-  console.log(`${nickname}: ${text}`);
-});
+socket.on("receiveMessage", handleReceiveMessage);
 
 function sendMessage(text) {
   socket.emit("sendMssage", { text });

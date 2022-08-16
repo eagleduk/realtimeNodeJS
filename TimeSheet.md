@@ -1,3 +1,32 @@
+========================= 2022-08-16 =======================
+
+## del
+1. del 설치
+   - npm i del
+   - 파일 및 폴더를 삭제 할 수 있게 해준다.
+   - 버전이 많이 변경되어서 시행착오 및 검색으로 해결..
+   1. package module 추가
+      - commonJS 관련 import 에서 에러가 발생..
+      - package.json `"type": "module"` 추가
+      *** module을 추가시 socket.io 에서 에러 발생.. module 시 동작이 되질 않는다.
+   - 강의 버전인 4.1.0 으로 설치..
+   - npm i del@4.1.0
+
+1. gulp-browserify
+   - 현재 공식 github 에 더이상 업데이트가 되질 않는다.
+   - 비슷한 패키지인 gulp-bro 를 사용하라고 한다.
+
+1. gulp-bro 설치
+   - npm install --save-dev gulp-bro
+   - gulp 로 js 파일을 번들시 es6 문법(ex. import / export) 을 사용한 파일을 읽을 수 있게 해준다.
+   - babel 옵션을 사용하기 위해 `babelify` 설치를 해 주어야 한다.
+   - npm i babelify
+   - presets 값은 `.babelrc` 파일과 동일하게 설정.
+
+1. nodemon ignore 추가
+   - assets 하위의 js / scss 파일을 수정할 때 마다 build 가 실행됨으로 서버가 재시작 되는것을 방지
+   - ignore 옵션 추가 (assets/, src/static/)
+
 ========================= 2022-08-15 =======================
 
 ## Develop Setting
