@@ -1,6 +1,7 @@
 import express from "express";
 import { join } from "path";
 import Server from "socket.io";
+import socketEvents from "./socketEvents";
 
 const PORT = 4400;
 const app = express();
@@ -18,14 +19,4 @@ const server = app.listen(PORT, handleListening);
 
 const io = Server(server);
 
-io.on("connection", (socket) => {
-  socket.on("sendMssage", (data) => {
-    socket.broadcast.emit("receiveMessage", {
-      ...data,
-      nickname: socket.nickname || "Anonymous",
-    });
-  });
-  socket.on("setNickname", (data) => {
-    socket.nickname = data.nickname;
-  });
-});
+io.on("connection", (socket) => socketEvents(socket));

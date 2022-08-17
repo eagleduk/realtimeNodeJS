@@ -7,6 +7,10 @@ html(lang="en")
         link(rel="stylesheet", href="/static/styles/styles.css")
         title RealTime Game
     body 
-        h1 Hello
+        div#loginContainer
+            form
+                input(placeholder="Enter your name", type="text")
+        div#gameContainer
+            h1 Login
         script(src="/socket.io/socket.io.js")
-        script(src="/static/js/main.js") 
+        script(src="/static/js/main.js")

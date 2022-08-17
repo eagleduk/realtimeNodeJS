@@ -1,7 +1,27 @@
-$color: tomato;
+@import "./variables.scss";
+@import "./reset.scss";
+@import "./login.scss";
+
+* {
+    box-sizing: border-box;
+}
 
 body {
-    background-color: $color;
-    color: white;
-    position: sticky;
+    width: 100vw;
+    height: 100vh;
+    div {
+        display: none;
+    }
+
+    &.login {
+        div#gameContainer {
+            display: block;
+        }
+    }
+
+    &.logout {
+        div#loginContainer {
+            display: flex;
+        }
+    }
 }

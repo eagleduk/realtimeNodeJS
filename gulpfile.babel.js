@@ -11,7 +11,7 @@ const sass = gulpSass(dartSass);
 
 function styles() {
   return gulp
-    .src("assets/styles/**/*.scss")
+    .src("assets/styles/styles.scss")
     .pipe(sass())
     .pipe(
       autoPrefixer({
@@ -39,7 +39,7 @@ async function clean() {
 
 function watchBuild() {
   gulp.watch("assets/styles/**/*.scss", styles);
-  gulp.watch("assets/js/*.js", js);
+  gulp.watch("assets/js/**/*.js", js);
 }
 
 const dev = gulp.series(clean, styles, js, watchBuild);

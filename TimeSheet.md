@@ -1,3 +1,16 @@
+========================= 2022-08-17 =======================
+
+## Socket
+1. socket 관련 js 를 따로 만들어서 개발
+2. 서버의 event 따로(socketEvents.js), front-end event 따로(socket.js)
+
+## Gulp
+1. 번들시 css 설정을 잘못한 관계로 css 파일이 하나가 아닌 갯수만큼 번들이 되도록 되어있었다.
+2. `assets/styles/**/*.scss` 로 되어 있던걸 `assets/styles/styles.scss` 로 수정
+
+## Login
+1. login form 개발 css 는 중요한 부분이 아니라 그냥 복사
+
 ========================= 2022-08-16 =======================
 
 ## del
