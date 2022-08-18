@@ -2,6 +2,10 @@ const EVENTS = {
   setNickname: "setNickname",
   enterUser: "enterUser",
   newUser: "newUser",
+  sendMessage: "sendMessage",
+  reciveMessage: "reciveMessage",
+  disconnect: "disconnect",
+  leaveUser: "leaveUser",
 };
 
 const CONSTANTS = {

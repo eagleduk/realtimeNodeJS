@@ -5,8 +5,19 @@ const socketEvents = (socket) => {
     socket.nickname = nickname;
   });
   socket.on(EVENTS.enterUser, ({ nickname }) => {
-    console.log(nickname);
+    socket.nickname = nickname;
     socket.broadcast.emit(EVENTS.newUser, { nickname });
+  });
+  socket.on(EVENTS.sendMessage, ({ message }) => {
+    socket.broadcast.emit(EVENTS.reciveMessage, {
+      message,
+      nickname: socket.nickname,
+    });
+  });
+  socket.on(EVENTS.disconnect, () => {
+    socket.broadcast.emit(EVENTS.leaveUser, {
+      nickname: socket.nickname,
+    });
   });
 };
 
