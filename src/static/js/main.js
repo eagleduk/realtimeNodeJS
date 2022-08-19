@@ -1,111 +1,6 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 
-var canvas = document.getElementById("jsCanvas");
-var ctx = canvas.getContext("2d");
-canvas.width = 700;
-canvas.height = 700;
-ctx.strokeStyle = "#2c2c2c";
-ctx.lineWidth = 2.5;
-var painting = false;
-var fill = false;
-
-function stopPainting() {
-  painting = false;
-}
-
-function startPainting() {
-  if (fill) {
-    ctx.fillRect(0, 0, 700, 700);
-  } else {
-    painting = true;
-  }
-}
-
-function onMouseMove(event) {
-  var x = event.offsetX;
-  var y = event.offsetY;
-
-  if (!painting) {
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-  } else {
-    ctx.lineTo(x, y);
-    ctx.stroke();
-  }
-}
-
-function onMouseDown(event) {
-  painting = true;
-}
-
-if (canvas) {
-  canvas.addEventListener("mousemove", onMouseMove);
-  canvas.addEventListener("mousedown", startPainting);
-  canvas.addEventListener("mouseup", stopPainting);
-  canvas.addEventListener("mouseleave", stopPainting);
-}
-
-var divs = document.querySelectorAll("div");
-
-function changeColor(event) {
-  ctx.fillStyle = event.target.style.backgroundColor;
-  ctx.strokeStyle = event.target.style.backgroundColor;
-}
-
-if (divs) {
-  divs.forEach(function (div) {
-    if (div.classList.contains("controls_color")) {
-      div.addEventListener("click", changeColor);
-    }
-  });
-}
-
-var range = document.getElementById("jsRange");
-
-function changeLineWidth(event) {
-  ctx.lineWidth = event.target.value;
-}
-
-if (range) {
-  range.addEventListener("change", changeLineWidth);
-}
-
-var jsMode = document.getElementById("jsMode");
-
-function startFill(event) {
-  var text = event.target.innerText;
-
-  if (text === "FILL") {
-    event.target.innerText = "paint";
-    fill = true;
-  } else {
-    event.target.innerText = "fill";
-    fill = false;
-  }
-}
-
-if (jsMode) {
-  jsMode.addEventListener("click", startFill);
-}
-
-var jsSave = document.getElementById("jsSave");
-
-function startSave() {
-  var url = canvas.toDataURL();
-  var link = document.createElement("a");
-  link.href = url;
-  link.download = "download.png";
-  link.click();
-}
-
-if (jsSave) {
-  jsSave.addEventListener("click", startSave);
-}
-
-},{}],2:[function(require,module,exports){
-"use strict";
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -145,7 +40,7 @@ var addChatMessage = function addChatMessage(_ref) {
 
 exports.addChatMessage = addChatMessage;
 
-},{"./socket":6,"./variables":7}],3:[function(require,module,exports){
+},{"./socket":6,"./variables":7}],2:[function(require,module,exports){
 "use strict";
 
 var _socket = require("./socket");
@@ -176,16 +71,16 @@ var handleLoginSubmit = function handleLoginSubmit(event) {
 
 loginForm && loginForm.addEventListener("submit", handleLoginSubmit);
 
-},{"./socket":6,"./variables":7}],4:[function(require,module,exports){
+},{"./socket":6,"./variables":7}],3:[function(require,module,exports){
 "use strict";
 
 require("./socket");
 
 require("./login");
 
-require("./canvas");
+require("./paint");
 
-},{"./canvas":1,"./login":3,"./socket":6}],5:[function(require,module,exports){
+},{"./login":2,"./paint":5,"./socket":6}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -212,7 +107,151 @@ var leaveUser = function leaveUser(nickname) {
 
 exports.leaveUser = leaveUser;
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.endPaint = endPaint;
+exports.startPaint = startPaint;
+
+var _socket = require("./socket");
+
+var _variables = require("./variables");
+
+var CANVASWIDTH = 700;
+var CANVASHEIGHT = 700;
+var gameContainer = document.querySelector("div#gameContainer");
+var canvas = gameContainer.querySelector("canvas#jsCanvas");
+var ctx = canvas.getContext("2d");
+canvas.width = CANVASWIDTH;
+canvas.height = CANVASHEIGHT;
+ctx.strokeStyle = "#2c2c2c";
+ctx.lineWidth = 2.5;
+var painting = false;
+var fill = false;
+
+function stopPainting() {
+  painting = false;
+}
+
+function fillRect() {
+  ctx.fillRect(0, 0, CANVASWIDTH, CANVASHEIGHT);
+}
+
+function startPainting() {
+  if (fill) {
+    fillRect();
+  } else {
+    painting = true;
+  }
+}
+
+function startPaint(x, y) {
+  var lineWidth = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
+  var color = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : undefined;
+  var currentWidth = ctx.lineWidth;
+  if (lineWidth) ctx.lineWidth = lineWidth;
+  var currentColor = ctx.strokeStyle;
+  if (color) ctx.strokeStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  ctx.lineWidth = currentWidth;
+  ctx.strokeStyle = currentColor;
+}
+
+function endPaint(x, y) {
+  var lineWidth = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
+  var color = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : undefined;
+  var currentWidth = ctx.lineWidth;
+  if (lineWidth) ctx.lineWidth = lineWidth;
+  var currentColor = ctx.strokeStyle;
+  if (color) ctx.strokeStyle = color;
+  ctx.lineTo(x, y);
+  ctx.stroke();
+  ctx.lineWidth = currentWidth;
+  ctx.strokeStyle = currentColor;
+}
+
+function onMouseMove(event) {
+  var x = event.offsetX;
+  var y = event.offsetY;
+
+  if (!painting) {
+    startPaint(x, y);
+    (0, _socket.getSocket)().emit(_variables.EVENTS.sendStartPaint, {
+      x: x,
+      y: y,
+      lineWidth: ctx.lineWidth,
+      color: ctx.strokeStyle
+    });
+  } else {
+    endPaint(x, y);
+    (0, _socket.getSocket)().emit(_variables.EVENTS.sendEndPaint, {
+      x: x,
+      y: y,
+      lineWidth: ctx.lineWidth,
+      color: ctx.strokeStyle
+    });
+  }
+}
+
+function onMouseDown(event) {
+  painting = true;
+}
+
+if (canvas) {
+  canvas.addEventListener("mousemove", onMouseMove);
+  canvas.addEventListener("mousedown", startPainting);
+  canvas.addEventListener("mouseup", stopPainting);
+  canvas.addEventListener("mouseleave", stopPainting);
+}
+
+var divs = gameContainer.querySelectorAll("div");
+
+function changeColor(event) {
+  ctx.fillStyle = event.target.style.backgroundColor;
+  ctx.strokeStyle = event.target.style.backgroundColor;
+}
+
+if (divs) {
+  divs.forEach(function (div) {
+    if (div.classList.contains("controls_color")) {
+      div.addEventListener("click", changeColor);
+    }
+  });
+}
+
+var range = gameContainer.querySelector("input#jsRange");
+
+function changeLineWidth(event) {
+  ctx.lineWidth = event.target.value;
+}
+
+if (range) {
+  range.addEventListener("change", changeLineWidth);
+}
+
+var jsMode = gameContainer.querySelector("input#jsMode");
+
+function startFill(event) {
+  var text = event.target.innerText;
+
+  if (text === "FILL") {
+    event.target.innerText = "paint";
+    fill = true;
+  } else {
+    event.target.innerText = "fill";
+    fill = false;
+  }
+}
+
+if (jsMode) {
+  jsMode.addEventListener("click", startFill);
+}
+
+},{"./socket":6,"./variables":7}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -223,6 +262,8 @@ exports.setSocket = exports.getSocket = exports.enterUser = void 0;
 var _chat = require("./chat");
 
 var _noti = require("./noti");
+
+var _paint = require("./paint");
 
 var _variables = require("./variables");
 
@@ -258,6 +299,20 @@ var initSocket = function initSocket() {
     var nickname = _ref3.nickname;
     (0, _noti.leaveUser)(nickname);
   });
+  socket.on(_variables.EVENTS.reciveStartPaint, function (_ref4) {
+    var x = _ref4.x,
+        y = _ref4.y,
+        lineWidth = _ref4.lineWidth,
+        color = _ref4.color;
+    (0, _paint.startPaint)(x, y, lineWidth, color);
+  });
+  socket.on(_variables.EVENTS.reciveEndPaint, function (_ref5) {
+    var x = _ref5.x,
+        y = _ref5.y,
+        lineWidth = _ref5.lineWidth,
+        color = _ref5.color;
+    (0, _paint.endPaint)(x, y, lineWidth, color);
+  });
   socket.on("disconnect", function () {});
 };
 
@@ -271,7 +326,7 @@ var enterUser = function enterUser(nickname) {
 
 exports.enterUser = enterUser;
 
-},{"./chat":2,"./noti":5,"./variables":7}],7:[function(require,module,exports){
+},{"./chat":1,"./noti":4,"./paint":5,"./variables":7}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -285,7 +340,13 @@ var EVENTS = {
   sendMessage: "sendMessage",
   reciveMessage: "reciveMessage",
   disconnect: "disconnect",
-  leaveUser: "leaveUser"
+  leaveUser: "leaveUser",
+  sendStartPaint: "sendStartPaint",
+  sendEndPaint: "sendEndPaint",
+  reciveStartPaint: "reciveStartPaint",
+  reciveEndPaint: "reciveEndPaint",
+  sendFill: "sendFill",
+  reciveFill: "reciveFill"
 };
 exports.EVENTS = EVENTS;
 var CONSTANTS = {
@@ -298,4 +359,4 @@ var CLASSES = {
 };
 exports.CLASSES = CLASSES;
 
-},{}]},{},[4]);
+},{}]},{},[3]);

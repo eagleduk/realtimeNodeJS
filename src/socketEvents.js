@@ -19,6 +19,12 @@ const socketEvents = (socket) => {
       nickname: socket.nickname,
     });
   });
+  socket.on(EVENTS.sendStartPaint, (data) => {
+    socket.broadcast.emit(EVENTS.reciveStartPaint, data);
+  });
+  socket.on(EVENTS.sendEndPaint, (data) => {
+    socket.broadcast.emit(EVENTS.reciveEndPaint, data);
+  });
 };
 
 export default socketEvents;

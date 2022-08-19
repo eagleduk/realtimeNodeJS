@@ -1,3 +1,3 @@
 import "./socket";
 import "./login";
-import "./canvas";
+import "./paint";

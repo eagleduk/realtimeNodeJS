@@ -6,6 +6,12 @@ const EVENTS = {
   reciveMessage: "reciveMessage",
   disconnect: "disconnect",
   leaveUser: "leaveUser",
+  sendStartPaint: "sendStartPaint",
+  sendEndPaint: "sendEndPaint",
+  reciveStartPaint: "reciveStartPaint",
+  reciveEndPaint: "reciveEndPaint",
+  sendFill: "sendFill",
+  reciveFill: "reciveFill",
 };
 
 const CONSTANTS = {
